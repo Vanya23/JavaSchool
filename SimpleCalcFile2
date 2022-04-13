@@ -1,0 +1,119 @@
+
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class SimpleCalcFile2 {
+
+	public static void main(String[] args) {
+		String[] s = {"", "", ""};
+		
+		/*
+		Scanner in = new Scanner(System.in);
+		
+		
+		s[0] = in.next();
+		s[2] = in.next();
+		s[1] = in.next();
+		*/
+		try(FileReader reader = new FileReader("d:\\input.txt"))
+        {
+           // читаем посимвольно
+			char cbuf[] = new char[256];
+            int k = reader.read(cbuf);
+            String sbuf = String.copyValueOf(cbuf);
+            sbuf = sbuf.substring(0, k);
+            s = sbuf.split(" ");
+            sbuf = s[2];
+            s[2] = s[1];
+            s[1] = sbuf;
+            
+        }
+        catch(IOException ex){
+             
+            System.out.println(ex.getMessage());
+        }   
+		
+		
+		String ansSt = "";
+		
+		double[] dm = new double[2];
+		
+		boolean work = true;
+		
+		for (int i = 0; i < 2; i++) {
+			try {	
+			dm[i] = Double.parseDouble(s[i]); 
+			}	
+		
+		catch (NumberFormatException n1) {
+			ansSt = "Error! Not number";
+			work = false;
+			break;
+		}
+		}
+		
+		
+
+		
+		if (!work) {}
+		else if (s[2].equals("+")) {
+			ansSt = dm[0] + dm[1] + "";
+		}
+		else if (s[2].equals("-")) {
+			ansSt = dm[0] - dm[1] + "";
+		}
+		else if (s[2].equals("/")) {
+			/*
+			int comp = 0;
+			
+			comp = Double.compare(dm[1], 0);
+			
+			if (comp == 0) {
+				
+			}
+			*/
+			
+			double ans = dm[0] / dm[1];
+			
+			if (Double.isNaN(ans) || Double.isFinite(ans) 
+					|| Double.isInfinite(ans)) {
+				ansSt = "Error! Division by zero";
+				
+			}
+			else {			
+				ansSt = ans + "";
+			}
+		}
+		else if (s[2].equals("*")) {
+			ansSt = dm[0] * dm[1] + "";
+		}
+		else {
+			ansSt = "Operation Error!";
+		}
+		
+		
+		
+		 //https://metanit.com/java/tutorial/6.8.php
+        try(FileWriter writer = new FileWriter("d:\\output.txt", false))
+        {
+           // запись всей строки
+            //String text = "Hello Gold!";
+            writer.write(ansSt);
+            // запись по символам
+           // writer.append('\n');
+           // writer.append('E');
+             
+            writer.flush();
+        }
+        catch(IOException ex){
+             
+            System.out.println(ex.getMessage());
+        } 
+    } 
+		
+		
+}
+
+
